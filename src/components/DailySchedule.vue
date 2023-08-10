@@ -19,26 +19,21 @@
     <div class="schedule">
       <div class="time-slot">8:00 <span style="opacity: 0.75;">AM</span></div>
       <div class="pill-container">
-        <div class="pill-card"
-          :class="{ 'bg-yellow': med.name == 'Gabapentin', 'bg-blue': med.name == 'Glyburide', 'pill-taken': med.taken == true }"
-          v-for="med in meds" :key="med.id" @click="setDone(med)">
+        <div class="pill-card" :class="{
+          'bg-yellow': med.name == 'Gabapentin',
+          'bg-blue': med.name == 'Glyburide',
+          'pill-taken': med.taken == true
+        }" v-for="med in meds" :key="med.id" @click="setDone(med)">
           <div class="pill-icon">
-            <img src="../assets/pill.svg" alt="My Happy SVG" />
+            <img v-if="med.name == 'Metamucil'" src="../assets/poop.svg" :alt="med.name" />
+            <img v-if="med.name == 'Gabapentin'" src="../assets/pill.svg" :alt="med.name" />
+            <img v-if="med.name == 'Glyburide'" src="../assets/pill2.svg" :alt="med.name" />
           </div>
           <div class="pill-details">
             <div class="pill-name">{{ med.name }}</div>
             <div class="pill-dose">{{ med.dose }}</div>
           </div>
         </div>
-        <!-- <div class="pill-card bg-blue">
-          <div class="pill-icon">
-            <img src="../assets/pill2.svg" alt="My Happy SVG" />
-          </div>
-          <div class="pill-details">
-            <div class="pill-name">Glyburide</div>
-            <div class="pill-dose">600mg</div>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -46,13 +41,20 @@
     <div class="schedule">
       <div class="time-slot">3:00 <span style="opacity: 0.75;">PM</span></div>
       <div class="pill-container">
-        <div class="pill-card bg-orange">
+        <div class="pill-card" :class="{
+          'bg-yellow': med.name == 'Gabapentin',
+          'bg-blue': med.name == 'Glyburide',
+          'bg-orange': med.name == 'Metamucil',
+          'pill-taken': med.taken == true
+        }" v-for="med in meds_3pm" :key="med.id" @click="setDone(med)">
           <div class="pill-icon">
-            <img src="../assets/poop.svg" alt="My Happy SVG" />
+            <img v-if="med.name == 'Metamucil'" src="../assets/poop.svg" :alt="med.name" />
+            <img v-if="med.name == 'Gabapentin'" src="../assets/pill.svg" :alt="med.name" />
+            <img v-if="med.name == 'Glyburide'" src="../assets/pill2.svg" :alt="med.name" />
           </div>
           <div class="pill-details">
-            <div class="pill-name">Metamucil</div>
-            <div class="pill-dose">11.3g</div>
+            <div class="pill-name">{{ med.name }}</div>
+            <div class="pill-dose">{{ med.dose }}</div>
           </div>
         </div>
       </div>
@@ -62,13 +64,20 @@
     <div class="schedule">
       <div class="time-slot">8:00 <span style="opacity: 0.75;">PM</span></div>
       <div class="pill-container">
-        <div class="pill-card bg-blue">
+        <div class="pill-card" :class="{
+          'bg-yellow': med.name == 'Gabapentin',
+          'bg-blue': med.name == 'Glyburide',
+          'bg-orange': med.name == 'Metamucil',
+          'pill-taken': med.taken == true
+        }" v-for="med in meds_8pm" :key="med.id" @click="setDone(med)">
           <div class="pill-icon">
-            <img src="../assets/pill2.svg" alt="My Happy SVG" />
+            <img v-if="med.name == 'Metamucil'" src="../assets/poop.svg" :alt="med.name" />
+            <img v-if="med.name == 'Gabapentin'" src="../assets/pill.svg" :alt="med.name" />
+            <img v-if="med.name == 'Glyburide'" src="../assets/pill2.svg" :alt="med.name" />
           </div>
           <div class="pill-details">
-            <div class="pill-name">Glyburide</div>
-            <div class="pill-dose">600mg</div>
+            <div class="pill-name">{{ med.name }}</div>
+            <div class="pill-dose">{{ med.dose }}</div>
           </div>
         </div>
       </div>
@@ -82,6 +91,10 @@ var isOpened = ref(false)
 var med_name = ref("none")
 var curr_med = ref("none")
 var meds = ref([{ id: 1, name: "Gabapentin", dose: "300mg", taken: false }, { id: 2, name: "Glyburide", dose: "600mg", taken: false }])
+
+var meds_3pm = ref([{ id: 1, name: "Metamucil", dose: "11.3", taken: false }])
+
+var meds_8pm = ref([{ id: 1, name: "Glyburide", dose: "300mg", taken: false, }])
 // export default defineComponent({
 //   setup() {
 //     return {
