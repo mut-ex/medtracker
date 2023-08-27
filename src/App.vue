@@ -1,14 +1,19 @@
+
 <template>
-  <DailySchedule/>
+  
+  <!-- <UpdateSchedule/> -->
+  <DailySchedule />
 </template>
 
 <script>
 import DailySchedule from './components/DailySchedule.vue'
+// import UpdateSchedule from './components/UpdateSchedule.vue'
 
 export default {
   name: 'App',
   components: {
-    DailySchedule
+    DailySchedule,
+    // UpdateSchedule
   }
 }
 </script>
@@ -21,5 +26,10 @@ export default {
   text-align: center;
   color: #2b2d42;
   margin-top: 32px;
+  background-color: #fefefa;
+}
+
+html {
+  background-color: #fefefa;
 }
 </style>

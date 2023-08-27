@@ -1,83 +1,81 @@
 <template>
-  <VueSidePanel v-model="isOpened" lock-scroll rerender side="bottom" height="50%" panel-color="#ffd670">
+  <VueSidePanel
+    v-model="isOpened"
+    lock-scroll
+    rerender
+    side="bottom"
+    height="50%"
+    panel-color="#ffd670"
+  >
     <div class="confirmation-popup">
-      <div class="confirmation-text">Have you taken <b>{{ med_name }}</b>?</div>
+      <div class="confirmation-text">
+        Have you taken <b>{{ med_name }}</b
+        >?
+      </div>
       <div class="confirmation-button-container">
-        <div class="confirmation-button confirmation-button-yes" @click="setYes()"><img src="../assets/thumbs-up.svg"
-            alt="My Happy SVG" />
+        <div
+          class="confirmation-button confirmation-button-yes"
+          @click="setYes()"
+        >
+          <img src="../assets/thumbs-up.svg" alt="My Happy SVG" />
         </div>
-        <div class="confirmation-button confirmation-button-no" @click="setNo()"><img src="../assets/thumbs-down.svg"
-            alt="My Happy SVG" />
+        <div
+          class="confirmation-button confirmation-button-no"
+          @click="setNo()"
+        >
+          <img src="../assets/thumbs-down.svg" alt="My Happy SVG" />
         </div>
       </div>
-
     </div>
-
   </VueSidePanel>
   <h1>Daily Schedule</h1>
-  <div class="card">
-    <div class="schedule">
-      <div class="time-slot">8:00 <span style="opacity: 0.75;">AM</span></div>
-      <div class="pill-container">
-        <div class="pill-card" :class="{
-          'bg-yellow': med.name == 'Gabapentin',
-          'bg-blue': med.name == 'Glyburide',
-          'pill-taken': med.taken == true
-        }" v-for="med in meds" :key="med.id" @click="setDone(med)">
-          <div class="pill-icon">
-            <img v-if="med.name == 'Metamucil'" src="../assets/poop.svg" :alt="med.name" />
-            <img v-if="med.name == 'Gabapentin'" src="../assets/pill.svg" :alt="med.name" />
-            <img v-if="med.name == 'Glyburide'" src="../assets/pill2.svg" :alt="med.name" />
-          </div>
-          <div class="pill-details">
-            <div class="pill-name">{{ med.name }}</div>
-            <div class="pill-dose">{{ med.dose }}</div>
-          </div>
-        </div>
+  <div class="time-slot" v-for="timeslot in schedule" :key="timeslot.id">
+    <div class="time-container">
+      <!-- <img class="time-icon" src="../assets/sunrise.png" /> -->
+      <div class="time-text">
+        {{ timeslot.time }}
+        <span style="opacity: 0.75">{{ timeslot.am_or_pm }}</span>
       </div>
     </div>
-  </div>
-  <div class="card">
-    <div class="schedule">
-      <div class="time-slot">3:00 <span style="opacity: 0.75;">PM</span></div>
-      <div class="pill-container">
-        <div class="pill-card" :class="{
-          'bg-yellow': med.name == 'Gabapentin',
-          'bg-blue': med.name == 'Glyburide',
-          'bg-orange': med.name == 'Metamucil',
-          'pill-taken': med.taken == true
-        }" v-for="med in meds_3pm" :key="med.id" @click="setDone(med)">
-          <div class="pill-icon">
-            <img v-if="med.name == 'Metamucil'" src="../assets/poop.svg" :alt="med.name" />
-            <img v-if="med.name == 'Gabapentin'" src="../assets/pill.svg" :alt="med.name" />
-            <img v-if="med.name == 'Glyburide'" src="../assets/pill2.svg" :alt="med.name" />
-          </div>
-          <div class="pill-details">
-            <div class="pill-name">{{ med.name }}</div>
-            <div class="pill-dose">{{ med.dose }}</div>
-          </div>
+    <div class="pill-container">
+      <!-- <div v-for="pill in timeslot.pill_checklist.value" :key="pill.name">
+        {{ pill.name }}
+      </div> -->
+      <div
+        :style="{ 'background-color': getPill(pill.name).color }"
+        class="pill-card"
+        :class="{
+          'pill-taken': pill.taken == true,
+        }"
+        v-for="pill in timeslot.pill_checklist"
+        :key="pill.id"
+        @click="setDone(timeslot.id, pill.name)"
+      >
+        <div class="pill-icon">
+          <img
+            v-if="getPill(pill.name).type == 'capsule'"
+            src="../assets/capsule.svg"
+            :alt="pill"
+          />
+          <img
+            v-if="getPill(pill.name).type == 'tablet'"
+            src="../assets/tablet.svg"
+            :alt="pill"
+          />
+          <img
+            v-if="getPill(pill.name).type == 'spray'"
+            src="../assets/spray.svg"
+            :alt="pill"
+          />
         </div>
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="schedule">
-      <div class="time-slot">8:00 <span style="opacity: 0.75;">PM</span></div>
-      <div class="pill-container">
-        <div class="pill-card" :class="{
-          'bg-yellow': med.name == 'Gabapentin',
-          'bg-blue': med.name == 'Glyburide',
-          'bg-orange': med.name == 'Metamucil',
-          'pill-taken': med.taken == true
-        }" v-for="med in meds_8pm" :key="med.id" @click="setDone(med)">
-          <div class="pill-icon">
-            <img v-if="med.name == 'Metamucil'" src="../assets/poop.svg" :alt="med.name" />
-            <img v-if="med.name == 'Gabapentin'" src="../assets/pill.svg" :alt="med.name" />
-            <img v-if="med.name == 'Glyburide'" src="../assets/pill2.svg" :alt="med.name" />
-          </div>
-          <div class="pill-details">
-            <div class="pill-name">{{ med.name }}</div>
-            <div class="pill-dose">{{ med.dose }}</div>
+        <div class="pill-details">
+          <div class="pill-name">{{ pill.name }}</div>
+          <div class="pill-dose">{{ getPill(pill.name).dose }}</div>
+          <div class="row" v-if="pill.taken_at">
+            <img class="small-icon" src="../assets/check.png" />
+            <div class="pill-takenat" >
+              Taken at {{ pill.taken_at }}
+            </div>
           </div>
         </div>
       </div>
@@ -86,49 +84,213 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-var isOpened = ref(false)
-var med_name = ref("none")
-var curr_med = ref("none")
-var meds = ref([{ id: 1, name: "Gabapentin", dose: "300mg", taken: false }, { id: 2, name: "Glyburide", dose: "600mg", taken: false }])
+import { ref, onBeforeMount, reactive } from "vue";
 
-var meds_3pm = ref([{ id: 1, name: "Metamucil", dose: "11.3", taken: false }])
+var isOpened = ref(false);
+var med_name = ref("none");
+var curr_med = ref("none");
+var curr_timeslot = ref("none");
 
-var meds_8pm = ref([{ id: 1, name: "Glyburide", dose: "300mg", taken: false, }])
-// export default defineComponent({
-//   setup() {
-//     return {
-//       isOpened: ref(true)
-//     }
-//   }
-// })
+var prescriptions = [
+  {
+    name: "Diltiazem ER (24HR)",
+    dose: "180 mg",
+    color: "#ADFFFF",
+    type: "capsule",
+  },
+  {
+    name: "Gabapentin",
+    dose: "300 mg",
+    color: "#FFF8AD",
+    type: "capsule",
+  },
+  {
+    name: "Glyburide",
+    dose: "10 mg",
+    color: "#ADE9FF",
+    type: "tablet",
+  },
+  {
+    name: "Metformin",
+    dose: "2 × 500 mg",
+    color: "#F2F3F4",
+    type: "tablet",
+  },
+  {
+    name: "Eplerenone",
+    dose: "50 mg",
+    color: "#FFE0AD",
+    type: "tablet",
+  },
+  {
+    name: "Omeprazole",
+    dose: "40 mg",
+    color: "#DFDAFB",
+    type: "capsule",
+  },
+  {
+    name: "Warfarin",
+    dose: "?? mg",
+    color: "#B6FFAD",
+    type: "tablet",
+  },
+  {
+    name: "Advair",
+    dose: "500/50 mcg",
+    color: "#EFD6FF",
+    type: "spray",
+  },
+  {
+    name: "Triamterene-Hydrochlorothiazide",
+    dose: "37.5/25 mg",
+    color: "#ADFFE4",
+    type: "tablet",
+  },
+  {
+    name: "Fluticasone",
+    dose: "27.5 mcg",
+    color: "#FFADAD",
+    type: "spray",
+  },
+  {
+    name: "Vitamin D3",
+    dose: "5000 IU",
+    color: "#D9FFAD",
+    type: "capsule",
+  },
+  {
+    name: "Centrum Ultra Men's Vitamin",
+    dose: "5000 IU",
+    color: "#ADD5FF",
+    type: "tablet",
+  },
+];
+
+var schedule = [
+  {
+    id: 1,
+    time: "8:00",
+    am_or_pm: "AM",
+    pill_checklist: [
+      { id: 1, name: "Diltiazem ER (24HR)", taken_at: "8:06 AM" },
+      { id: 2, name: "Glyburide", taken_at: null },
+    ],
+  },
+  {
+    id: 2,
+    time: "3:30",
+    am_or_pm: "PM",
+    pill_checklist: [{ id: 1, name: "Gabapentin", taken_at: null }],
+  },
+  {
+    id: 3,
+    time: "8:00",
+    am_or_pm: "PM",
+    pills: ["Diltiazem ER (24HR)"],
+    pill_checklist: [{ id: 1, name: "Diltiazem ER (24HR)", taken_at: null }],
+  },
+];
+
+var rx_log = ref(JSON.parse(localStorage.getItem("rx_log")) || []);
+
+function getPill(pill) {
+  // console.log("Pill: " + pill)
+  return prescriptions.find((p) => p.name == pill);
+}
+
+var curr_schedule = ref([]);
+
+function keyForToday() {
+  const date = new Date();
+  const rx_log_key =
+    String(date.getDate()) +
+    "-" +
+    String(date.getMonth()) +
+    "-" +
+    String(date.getFullYear());
+  return rx_log_key;
+}
+// var rx_log = ref([])
+
+// const rx_log_key = keyForToday();
+// console.log("rx_log = ");
+// console.log(rx_log);
+
+// console.log("rx_log[rx_log_key] = ");
+// console.log(rx_log[rx_log_key]);
+
+// if (typeof rx_log[rx_log_key] === "undefined") {
+//   rx_log[rx_log_key] = schedule;
+//   console.log("New entry created for today");
+//   rx_log[rx_log_key].forEach((timeslot) => {
+//     timeslot.pills.forEach((pill) => {
+//       console.log(timeslot["pill_checklist"]);
+//       timeslot["pill_checklist"].push({ name: pill, taken: false, taken_at: null });
+//     });
+//   });
+// } else {
+//   console.log("Entry for today already exists");
+//   schedule = rx_log[rx_log_key];
+// }
+// console.log("rx_log[rx_log_key] => ");
+// console.log(rx_log[rx_log_key]);
+// console.log(schedule);
+
+// // var rx_log_today = rx_log[rx_log_key];
+// console.log("rx_log =>");
+
+// console.log(rx_log);
+// localStorage.setItem("rx_log", JSON.stringify(rx_log));
+// onBeforeMount(() => {
+//   console.log("Before mount!");
+//   schedule = rx_log[rx_log_key];
+//   console.log(schedule);
+// });
+
+function currTime() {
+  const date = new Date();
+  var curr_hour = date.getHours();
+  var am_pm = "AM";
+  if (curr_hour > 12) {
+    curr_hour = curr_hour - 12;
+    am_pm = "PM";
+  }
+  return String(curr_hour) + ":" + String(date.getMinutes()) + am_pm;
+}
+
 function setYes() {
-  console.log("YES")
-  curr_med.value.taken = true
-  isOpened.value = !isOpened.value
-
+  console.log("YES -> " + curr_med.value.taken);
+  curr_med.value.taken = true;
+  console.log(currTime());
+  curr_med.value.taken_at = currTime();
+  isOpened.value = !isOpened.value;
+  localStorage.setItem("rx_log", JSON.stringify(rx_log));
 }
 
 function setNo() {
-  console.log("YES")
-  curr_med.value.taken = false
-  isOpened.value = !isOpened.value
-
+  console.log("NO");
+  curr_med.value.taken = false;
+  isOpened.value = !isOpened.value;
 }
-function setDone(med) {
-  med_name = med.name
-  curr_med.value = med
-  isOpened.value = !isOpened.value
-  console.log(med_name)
+function setDone(timeslot, pill) {
+  console.log("TimeSlot: " + timeslot);
+  console.log("Pill: " + pill);
+  isOpened.value = !isOpened.value;
+  med_name = pill;
+  curr_timeslot.value = schedule.value.find((t) => t.id == timeslot);
+  // console.log(curr_timeslot.value.pill_checklist.find(p => p.name == pill))
+  curr_med.value = curr_timeslot.value.pill_checklist.find(
+    (p) => p.name == pill
+  );
+  // curr_med = curr_timeslot.value.pill_checklist.find(p => p.name == pill)
   // set.done = e.target.checked
-  // localStorage.setItem(current_lift_id.value, JSON.stringify(days.value[current_day.value].routines[current_exercise.value].sets))
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 h1 {
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   font-weight: 700;
   margin-bottom: 32px;
 }
@@ -139,7 +301,7 @@ h1 {
 }
 
 .confirmation-text {
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   font-size: xx-large;
   padding-bottom: 16px;
   color: #2b2d42;
@@ -151,7 +313,7 @@ h1 {
   align-items: center;
   justify-content: center;
   margin: 16px;
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   font-size: x-large;
   text-align: center;
   border-radius: 32px;
@@ -170,14 +332,8 @@ h1 {
   background-color: #ff9770 !important;
 }
 
-.confirmation-button-yes {
-  /* box-shadow: rgba(189, 224, 254, 1) 0px 1px 4px; */
-}
-
-.confirmation-button-no {
-  background-color: #e4c1f9;
-  background-color: #2b2d42;
-
+.bg-gray {
+  background-color: #ced4da !important;
 }
 
 .confirmation-button-container {
@@ -191,17 +347,36 @@ h1 {
   margin: 16px;
   display: flex;
   flex-direction: row;
-  background-color: #d0f4de;
+  /* background-color: #d0f4de; */
   align-items: center;
   box-shadow: rgba(0, 0, 0, 0.07) 0px 3px 5px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 /* .pill-card:hover {
   background-color: #3d348b!important;
 } */
 
+.row {
+  border:1px solid #3d348b;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  margin-top: 8px;
+  justify-content: center;
+}
+
+.small-icon {
+  margin-right: 4px;
+  width: 20px;
+  height: 20px;
+}
+
 .pill-taken {
-  opacity: 0.5;
+  opacity: 0.65;
+  background-color: rgb(219, 224, 230) !important;
 }
 
 .pill-icon {
@@ -210,71 +385,75 @@ h1 {
   margin: 16px;
 }
 
+/* flex-grow: 0; */
 .pill-name {
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: xx-large;
-  font-weight: 700;
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-size: larger;
+  font-weight: 600;
   padding-bottom: 4px;
 }
 
 .pill-dose {
-  font-size: x-large;
+  font-family: "Barlow", sans-serif;
+  font-weight: 500;
+  font-size: large;
 }
 
 .pill-details {
-  margin: 16px;
+  /* margin: 16px; */
   text-align: left;
 }
 
-.pill {
-  border-radius: 8px;
-  padding: 12px;
-  margin: 12px;
+.pill-takenat {
+  /* margin-top: 8px; */
+  font-family: "Barlow", sans-serif;
   font-weight: 600;
-  font-size: 1.33em;
-  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-  font-family: 'IBM Plex Sans Condensed', sans-serif;
-  display: flex;
-}
-
-.pill-open {
-  background-color: #3d348b;
-}
-
-.pill-name {}
-
-.card {
-  border-radius: 4px;
-  /* padding: 6px; */
-  margin: 12px;
-  margin-bottom: 32px;
-  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; */
-}
-
-.schedule {
-  display: flex;
+  font-size: large;
 }
 
 .time-slot {
-  border-right: 6px solid #ff70a6;
+  /* border-radius: 4px; */
+  margin: 12px;
+  margin-bottom: 32px;
+}
+
+.time-container {
+  display: flex;
+  align-items: center;
+  margin: 16px;
+}
+
+.time-icon {
+  width: 50px;
+  margin: 8px;
+}
+
+.time-text {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 700;
+  font-size: xx-large;
+}
+
+.time-slot {
+  /* display: flex; */
+  border-left: 6px solid #ff70a6;
   /* background-color: #f3722c; */
   /* background-color: #fefefa; */
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
+  /* border-radius: 4px; */
+  /* border-bottom-left-radius: 4px; */
   color: #2b2d42;
   flex: 1;
-  padding: 12px;
+  /* padding: 12px; */
   text-align: right;
   font-size: 1.22em;
   font-weight: 700;
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
 }
 
 .pill-container {
-  flex: 8;
-  /* border: 1px solid red; */
+  /* flex: 8; */
+  /* border-top: 2px solid #2b2d42; */
 }
-
 
 .pill-yellow {
   background-color: #fee440;
@@ -284,15 +463,12 @@ h1 {
 .pill-blue {
   background-color: #9bb1ff;
   /* border: 1px solid #1F4FFF; */
-
 }
 
 .pill-orange {
   background-color: #ff9770;
   /* border: 1px solid #F54100; */
-
 }
-
 
 h3 {
   margin: 40px 0 0;
