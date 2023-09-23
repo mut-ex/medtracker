@@ -56,6 +56,7 @@
   </div>
   <div class="time-slot" v-for="timeslot in curr_log" :key="timeslot.id">
     <div class="time-container">
+      <div class="triangle"></div>
       <!-- <img class="time-icon" src="../assets/sunrise.png" /> -->
       <div class="time-text">
         {{ timeslot.time }}
@@ -70,7 +71,7 @@
         :style="{ 'background-color': getPill(pill.name).color }"
         class="pill-card"
         :class="{
-          'pill-taken': pill.taken == true,
+          'pill-taken': pill.taken_at !== null,
         }"
         v-for="pill in timeslot.pill_checklist"
         :key="pill.id"
@@ -105,7 +106,7 @@
           </div>
           <div v-else class="pill-dose">{{ getPill(pill.name).dose }}</div>
 
-          <div class="row" v-if="pill.taken_at">
+          <div class="pill-taken-at" v-if="pill.taken_at">
             <img class="small-icon" src="../assets/check.png" />
             <div class="pill-takenat" :class="{ shake: disabled }">
               Taken at {{ pill.taken_at }}
@@ -114,6 +115,8 @@
         </div>
       </div>
     </div>
+
+    <!-- <div class="time-slot-gap"></div> -->
   </div>
 </template>
 
@@ -362,7 +365,7 @@ var rx_log_history = ref([
   // { date: "20-8-2023", data: dummy_log_a },
   // { date: "21-8-2023", data: dummy_log_b },
 ]);
-rx_log_history.value.push({ date: "22-8-2023", data: empty_log });
+rx_log_history.value.push({ date: "9-23-2023", data: empty_log });
 
 var rx_log_keys = [];
 rx_log_history.value.forEach((day) => {
@@ -403,9 +406,9 @@ console.log("todays key: " + keyForToday());
 function keyForToday() {
   const date = new Date();
   const rx_log_history_key =
-    String(date.getDate()) +
-    "-" +
-    String(date.getMonth()) +
+  String(date.getMonth()) +
+  "-" +
+  String(date.getDate()+1) +
     "-" +
     String(date.getFullYear());
   return rx_log_history_key;
@@ -557,12 +560,22 @@ h1 {
 }
 
 .day-selector-container {
-  border: 1px solid black;
+  position: sticky;
+  top: 0px;
+  /* border: 1px solid black; */
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-left: 16px;
   padding-right: 16px;
+  /* background: linear-gradient(
+    180deg,
+    white 0%,
+    white 90%,
+    rgba(0, 0, 0, 0) 100%
+  ); */
+  background-color: #fefefa;
+  z-index: 1;
 }
 
 .confirmation-popup {
@@ -615,6 +628,7 @@ h1 {
   /* border: 1px solid #3d348b; */
   border-radius: 18px;
   margin: 16px;
+  margin-bottom: 0px;
   display: flex;
   flex-direction: row;
   /* background-color: #d0f4de; */
@@ -628,8 +642,10 @@ h1 {
   background-color: #3d348b!important;
 } */
 
-.row {
+.pill-taken-at {
   border: 1px solid #3d348b;
+  background-color: #fefefa;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -646,8 +662,8 @@ h1 {
 }
 
 .pill-taken {
-  opacity: 0.65;
-  background-color: rgb(219, 224, 230) !important;
+  /* opacity: 0.65; */
+  background-color: rgba(219, 224, 230) !important;
 }
 
 .pill-icon {
@@ -684,14 +700,33 @@ h1 {
 
 .time-slot {
   /* border-radius: 4px; */
-  margin: 12px;
-  margin-bottom: 32px;
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 28px 20px 28px 0;
+  border-color: transparent #1d2d44 transparent transparent;
 }
 
 .time-container {
   display: flex;
   align-items: center;
-  margin: 16px;
+  /* margin: 16px; */
+  /* margin-bottom: -16px; */
+  /* padding-top: 16px; */
+  /* padding-left: 16px; */
+  padding-bottom: 16px;
+  /* margin-top: 16px; */
+  position: sticky;
+  top: 101px;
+  /* background: linear-gradient(
+    180deg,
+    white 0%,
+    white 75%,
+    rgba(0, 0, 0, 0) 100%
+  ); */
 }
 
 .time-icon {
@@ -700,14 +735,30 @@ h1 {
 }
 
 .time-text {
+  color:#fefefa;
+  box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
   font-family: "Barlow Semi Condensed", sans-serif;
   font-weight: 700;
   font-size: xx-large;
+  background-color: #1d2d44;
+  padding: 8px;
+  padding-right: 12px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.time-slot-gap {
+  border-left: 6px solid #fdd3e3;
+  margin-left: -6px;
+  height: 64px;
 }
 
 .time-slot {
+  padding-bottom: 32px;
+  margin-left: 8px;
+  /* padding-bottom: 32px; */
   /* display: flex; */
-  border-left: 6px solid #ff70a6;
+  border-left:2px dotted #fb6f92;
   /* background-color: #f3722c; */
   /* background-color: #fefefa; */
   /* border-radius: 4px; */
