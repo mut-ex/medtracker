@@ -1,11 +1,11 @@
 <template>
   <VueSidePanel
     v-model="isOpened"
-    lock-scroll
     rerender
     side="bottom"
-    height="50%"
     panel-color="#ffd670"
+    hide-close-btn
+    height="400px"
   >
     <div class="confirmation-popup">
       <div class="confirmation-text">
@@ -41,7 +41,7 @@
       />
     </div>
     <h1 v-if="rx_log_keys[curr_log_idx] === keyForToday()">Today</h1>
-    <h1 v-else>{{ rx_log_keys[curr_log_idx] }}</h1>
+    <h1 v-else>{{ prettifyDate(rx_log_keys[curr_log_idx]) }}</h1>
     <div
       class="day-selector-button"
       :class="{ dimmed: rx_log_keys[curr_log_idx] === keyForToday() }"
@@ -56,7 +56,7 @@
   </div>
   <div class="time-slot" v-for="timeslot in curr_log" :key="timeslot.id">
     <div class="time-container">
-      <div class="triangle"></div>
+      <!-- <div class="triangle"></div> -->
       <!-- <img class="time-icon" src="../assets/sunrise.png" /> -->
       <div class="time-text">
         {{ timeslot.time }}
@@ -98,6 +98,36 @@
             src="../assets/poop.svg"
             :alt="pill"
           />
+          <img
+            v-if="getPill(pill.name).type == 'inhaler'"
+            src="../assets/inhaler.svg"
+            :alt="pill"
+          />
+          <img
+            v-if="getPill(pill.name).type == 'tablet-round'"
+            src="../assets/tablet-round.svg"
+            :alt="pill"
+          />
+          <img
+            v-if="getPill(pill.name).type == 'powder'"
+            src="../assets/powder.svg"
+            :alt="pill"
+          />
+          <img
+            v-if="getPill(pill.name).type == 'tablet-diamond'"
+            src="../assets/tablet-diamond.svg"
+            :alt="pill"
+          />
+          <img
+            v-if="getPill(pill.name).type == 'tablet-round-2x'"
+            src="../assets/tablet-round-2x.svg"
+            :alt="pill"
+          />
+          <img
+            v-if="getPill(pill.name).type == 'tablet-oval'"
+            src="../assets/tablet-oval.svg"
+            :alt="pill"
+          />
         </div>
         <div class="pill-details">
           <div class="pill-name">{{ pill.name }}</div>
@@ -106,16 +136,17 @@
           </div>
           <div v-else class="pill-dose">{{ getPill(pill.name).dose }}</div>
 
-          <div class="pill-taken-at" v-if="pill.taken_at">
-            <img class="small-icon" src="../assets/check.png" />
-            <div class="pill-takenat" :class="{ shake: disabled }">
-              Taken at {{ pill.taken_at }}
+          <div v-if="pill.taken_at">
+            <div class="pill-taken-at">
+              <img class="small-icon" src="../assets/check.png" />
+              <div class="pill-taken-at--text">
+                Taken at {{ pill.taken_at }}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <!-- <div class="time-slot-gap"></div> -->
   </div>
 </template>
@@ -168,13 +199,13 @@ var prescriptions = [
     name: "Metformin",
     dose: "2 × 500 mg",
     color: "#F2F3F4",
-    type: "tablet",
+    type: "tablet-round-2x",
   },
   {
     name: "Eplerenone",
     dose: "50 mg",
     color: "#FFE0AD",
-    type: "tablet",
+    type: "tablet-diamond",
   },
   {
     name: "Omeprazole",
@@ -186,19 +217,19 @@ var prescriptions = [
     name: "Warfarin",
     dose: "?? mg",
     color: "#B6FFAD",
-    type: "tablet",
+    type: "tablet-round",
   },
   {
     name: "Advair",
     dose: "500/50 mcg",
     color: "#EFD6FF",
-    type: "spray",
+    type: "inhaler",
   },
   {
     name: "Triamterene-Hydrochlorothiazide",
     dose: "37.5/25 mg",
     color: "#ADFFE4",
-    type: "tablet",
+    type: "tablet-oval",
   },
   {
     name: "Fluticasone",
@@ -228,13 +259,13 @@ var prescriptions = [
     name: "Lisinopril",
     dose: "40 mg",
     color: "#FFE0AD",
-    type: "tablet",
+    type: "tablet-round",
   },
   {
     name: "Cholestyramine Light",
     dose: "4 g",
     color: "#FFE0AD",
-    type: "tablet",
+    type: "powder",
   },
 ];
 
@@ -360,28 +391,29 @@ function getPill(pill) {
   return prescriptions.find((p) => p.name == pill);
 }
 // var rx_log = ref(JSON.parse(localStorage.getItem("rx_log")) || []);
-
-var rx_log_history = ref([
-  // { date: "20-8-2023", data: dummy_log_a },
-  // { date: "21-8-2023", data: dummy_log_b },
-]);
-rx_log_history.value.push({ date: "9-23-2023", data: empty_log });
-
+// var rx_log_history_dummy = [
+//   { date: "9-22-2023", data: dummy_log_a },
+//   { date: "9-23-2023", data: dummy_log_b },
+// ];
+var rx_log_history = ref(
+  JSON.parse(localStorage.getItem("rx_log_history")) || [
+    { date: keyForToday(), data: empty_log },
+  ]
+);
 var rx_log_keys = [];
 rx_log_history.value.forEach((day) => {
   console.log(day.date);
   rx_log_keys.push(day.date);
 });
+if (!rx_log_keys.includes(keyForToday())) {
+  console.log("No key for today!");
+  rx_log_history.value.push({ date: keyForToday(), data: empty_log });
+  rx_log_keys.push(keyForToday());
+}
+localStorage.setItem("rx_log_history", JSON.stringify(rx_log_history.value));
+
 curr_log_idx.value = rx_log_keys.length - 1;
-console.log(rx_log_keys);
-console.log(rx_log_keys.length);
-
-var curr_log = ref();
-curr_log.value = rx_log_history.value[curr_log_idx.value].data;
-console.log(rx_log_history.value[curr_log_idx.value].data);
-
-// console.log("date_keys = "+date_keys)
-// console.log(date_keys.indexOf("22-8-2023"))
+var curr_log = ref(rx_log_history.value[curr_log_idx.value].data);
 
 function prevDay() {
   if (curr_log_idx.value === 0) {
@@ -403,15 +435,91 @@ function nextDay() {
 
 console.log("todays key: " + keyForToday());
 // active_date.value = keyForToday()
+
+function prettifyDate(date_stamp) {
+  const date = new Date();
+  const s = date_stamp.split("-");
+  date.setMonth(s[0] - 1);
+  date.setDate(s[1]);
+  date.setYear(s[2]);
+  date.setHours(0);
+  date.setMinutes(0);
+  date.setMilliseconds(0);
+  const pretty = date.toDateString().split(" ");
+
+  return pretty[0] + ", " + pretty[1] + " " + pretty[2];
+}
 function keyForToday() {
   const date = new Date();
   const rx_log_history_key =
-  String(date.getMonth()) +
-  "-" +
-  String(date.getDate()+1) +
+    String(date.getMonth() + 1) +
+    "-" +
+    String(date.getDate()) +
     "-" +
     String(date.getFullYear());
   return rx_log_history_key;
+}
+
+function currTime() {
+  const date = new Date();
+  var curr_hour = date.getHours();
+  var am_pm = " AM";
+  if (curr_hour > 12) {
+    curr_hour = curr_hour - 12;
+    am_pm = " PM";
+  }
+  let mins;
+  if (date.getMinutes() < 10) mins = "0" + String(date.getMinutes());
+  else mins = String(date.getMinutes());
+  return String(curr_hour) + ":" + mins + am_pm;
+}
+// const disabled = ref(false)
+function setYes() {
+  console.log("YES -> " + curr_med.value.taken_at);
+  curr_med.value.taken_at = currTime();
+  console.log(curr_med.value.taken_at);
+  localStorage.setItem("rx_log_history", JSON.stringify(rx_log_history.value));
+
+  isOpened.value = !isOpened.value;
+  console.log(curr_log);
+
+  // disabled.value = true
+  // setTimeout(() => {
+  //   disabled.value = false
+  // }, 1500)
+  // localStorage.setItem("rx_log", JSON.stringify(rx_log));
+}
+// var curr_tid = 0
+// var curr_pid = 0
+
+function setNo() {
+  console.log("No -> " + curr_med.value.taken_at);
+  curr_med.value.taken_at = null;
+  console.log(curr_med.value.taken_at);
+  localStorage.setItem("rx_log_history", JSON.stringify(rx_log_history.value));
+
+  isOpened.value = !isOpened.value;
+}
+function setDone(timeslot, pill) {
+  console.log(timeslot);
+  console.log(pill);
+  // curr_tid = timeslot
+  // curr_pid = pill
+  curr_med.value = curr_log.value
+    .find((t) => t.id == timeslot)
+    .pill_checklist.find((p) => p.id == pill);
+  // curr_med.value = schedule.find((t) => t.id == timeslot).find((p) => p.id == pill)
+  // med_name.value = schedule[timeslot][pill].name;
+  isOpened.value = !isOpened.value;
+  console.log("thuis?");
+  console.log(curr_med.value);
+  // curr_timeslot.value = schedule.value.find((t) => t.id == timeslot);
+  // console.log(curr_timeslot.value.pill_checklist.find(p => p.name == pill))
+  // curr_med.value = curr_timeslot.value.pill_checklist.find(
+  // (p) => p.name == pill
+  // );
+  // curr_med = curr_timeslot.value.pill_checklist.find(p => p.name == pill)
+  // set.done = e.target.checked
 }
 // var rx_log = ref([])
 
@@ -449,55 +557,6 @@ function keyForToday() {
 //   schedule = rx_log[rx_log_key];
 //   console.log(schedule);
 // });
-
-function currTime() {
-  const date = new Date();
-  var curr_hour = date.getHours();
-  var am_pm = " AM";
-  if (curr_hour > 12) {
-    curr_hour = curr_hour - 12;
-    am_pm = " PM";
-  }
-  return String(curr_hour) + ":" + String(date.getMinutes()) + am_pm;
-}
-// const disabled = ref(false)
-function setYes() {
-  console.log("YES -> " + curr_med.value.taken_at);
-  curr_med.value.taken_at = currTime();
-  console.log(curr_med.value.taken_at);
-  isOpened.value = !isOpened.value;
-  // disabled.value = true
-  // setTimeout(() => {
-  //   disabled.value = false
-  // }, 1500)
-  // localStorage.setItem("rx_log", JSON.stringify(rx_log));
-}
-
-function setNo() {
-  console.log("No -> " + curr_med.value.taken_at);
-  curr_med.value.taken_at = null;
-  console.log(curr_med.value.taken_at);
-  isOpened.value = !isOpened.value;
-}
-function setDone(timeslot, pill) {
-  console.log(timeslot);
-  console.log(pill);
-
-  isOpened.value = !isOpened.value;
-  curr_med.value = empty_log
-    .find((t) => t.id == timeslot)
-    .pill_checklist.find((p) => p.id == pill);
-  // curr_med.value = schedule.find((t) => t.id == timeslot).find((p) => p.id == pill)
-  // med_name.value = schedule[timeslot][pill].name;
-  console.log(curr_med.value);
-  // curr_timeslot.value = schedule.value.find((t) => t.id == timeslot);
-  // console.log(curr_timeslot.value.pill_checklist.find(p => p.name == pill))
-  // curr_med.value = curr_timeslot.value.pill_checklist.find(
-  // (p) => p.name == pill
-  // );
-  // curr_med = curr_timeslot.value.pill_checklist.find(p => p.name == pill)
-  // set.done = e.target.checked
-}
 
 // const more_new = computed(() => {
 //   return author.books.length > 0 ? 'Yes' : 'No'
@@ -560,6 +619,7 @@ h1 {
 }
 
 .day-selector-container {
+  height: 128px;
   position: sticky;
   top: 0px;
   /* border: 1px solid black; */
@@ -568,13 +628,13 @@ h1 {
   align-items: center;
   padding-left: 16px;
   padding-right: 16px;
-  /* background: linear-gradient(
+  background: linear-gradient(
     180deg,
     white 0%,
-    white 90%,
+    white 50%,
     rgba(0, 0, 0, 0) 100%
-  ); */
-  background-color: #fefefa;
+  );
+  /* background-color: #fefefa; */
   z-index: 1;
 }
 
@@ -585,19 +645,22 @@ h1 {
 
 .confirmation-text {
   font-family: "IBM Plex Sans", sans-serif;
-  font-size: xx-large;
+  font-size: x-large;
   padding-bottom: 16px;
   color: #2b2d42;
 }
 
 .confirmation-button {
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.3) 0px -6px 0px inset;
+
   padding: 32px;
   flex: 1;
   align-items: center;
   justify-content: center;
   margin: 16px;
   font-family: "IBM Plex Sans", sans-serif;
-  font-size: x-large;
+  font-size: large;
   text-align: center;
   border-radius: 32px;
   background-color: #2b2d42;
@@ -621,6 +684,7 @@ h1 {
 
 .confirmation-button-container {
   display: flex;
+  /* border: 1px solid black; */
   flex-direction: row;
 }
 
@@ -630,29 +694,34 @@ h1 {
   margin: 16px;
   margin-bottom: 0px;
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
   /* background-color: #d0f4de; */
   align-items: center;
   box-shadow: rgba(0, 0, 0, 0.07) 0px 3px 5px;
   padding-top: 12px;
   padding-bottom: 12px;
+  padding-right: 12px;
 }
 
-/* .pill-card:hover {
-  background-color: #3d348b!important;
-} */
-
 .pill-taken-at {
-  border: 1px solid #3d348b;
-  background-color: #fefefa;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  border-radius: 4px;
-  display: flex;
   align-items: center;
-  padding: 8px;
-  margin-top: 8px;
+  background-color: #fefefa;
+  border-radius: 4px;
+  border: 1px solid #3d348b;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  display: flex;
+  width: 256px;
+  flex-basis: 32px;
   justify-content: center;
-  /* height: 0; */
+  margin-top: 8px;
+  padding: 8px;
+}
+
+.pill-taken-at--text {
+  /* margin-top: 8px; */
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+  font-size: large;
 }
 
 .small-icon {
@@ -667,8 +736,7 @@ h1 {
 }
 
 .pill-icon {
-  width: 32px;
-  height: 32;
+  width: 40px;
   margin: 16px;
 }
 
@@ -689,17 +757,8 @@ h1 {
 .pill-details {
   /* margin: 16px; */
   text-align: left;
-}
-
-.pill-takenat {
-  /* margin-top: 8px; */
-  font-family: "Barlow", sans-serif;
-  font-weight: 600;
-  font-size: large;
-}
-
-.time-slot {
-  /* border-radius: 4px; */
+  /* display: flex; */
+  /* flex-direction: column; */
 }
 
 .triangle {
@@ -720,7 +779,7 @@ h1 {
   padding-bottom: 16px;
   /* margin-top: 16px; */
   position: sticky;
-  top: 101px;
+  top: 128px;
   /* background: linear-gradient(
     180deg,
     white 0%,
@@ -735,16 +794,29 @@ h1 {
 }
 
 .time-text {
-  color:#fefefa;
-  box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+  background-image: url("../assets/marker.svg");
+  filter: drop-shadow(4px 4px 10px rgb(0 0 0 / 0.4));
+  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+  /* clip-path: path("m20.33,55.25h98.04c5.45,0,9.88-3.77,9.88-8.42V7.03c0-3.75-3.56-6.78-7.95-6.78H20.33c-3.01,0-5.77,1.45-7.11,3.75L1.1,24.68C-.03,26.61-.03,28.89,1.1,30.82l12.12,20.68c1.35,2.3,4.1,3.75,7.11,3.75Z"); */
+  height: 55px;
+  width: 128px;
+  color: #fefefa;
   font-family: "Barlow Semi Condensed", sans-serif;
   font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* display:table-cell; */
+  /* vertical-align:middle; */
+  line-height: 55px;
   font-size: xx-large;
-  background-color: #1d2d44;
-  padding: 8px;
-  padding-right: 12px;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  text-align: center;
+  /* background-color: #1d2d44; */
+  /* padding: 0px; */
+  padding-right: 8px;
+  padding-left: 16px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .time-slot-gap {
@@ -755,10 +827,10 @@ h1 {
 
 .time-slot {
   padding-bottom: 32px;
-  margin-left: 8px;
+  margin-left: 32px;
   /* padding-bottom: 32px; */
   /* display: flex; */
-  border-left:2px dotted #fb6f92;
+  border-left: 2px dotted #fb6f92;
   /* background-color: #f3722c; */
   /* background-color: #fefefa; */
   /* border-radius: 4px; */
@@ -770,11 +842,6 @@ h1 {
   font-size: 1.22em;
   font-weight: 700;
   font-family: "IBM Plex Sans", sans-serif;
-}
-
-.pill-container {
-  /* flex: 8; */
-  /* border-top: 2px solid #2b2d42; */
 }
 
 .pill-yellow {
