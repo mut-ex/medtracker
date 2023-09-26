@@ -72,11 +72,13 @@ h1 {
     rgba(0, 0, 0, 0) 100%
   );
   /* background-color: #fefefa; */
-  /* z-index: 1; */
+  z-index: 1;
 }
 
 .confirmation-popup {
   padding: 32px;
+  z-index: 2;
+
   /* background-color: #ffd670; */
 }
 
@@ -209,6 +211,7 @@ h1 {
       white 75%,
       rgba(0, 0, 0, 0) 100%
     ); */
+
 }
 
 .time-icon {
@@ -217,6 +220,7 @@ h1 {
 }
 
 .time-text {
+
   background-image: url("../assets/marker.svg");
   filter: drop-shadow(4px 4px 10px rgb(0 0 0 / 0.4));
   /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
