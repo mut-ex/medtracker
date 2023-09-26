@@ -4,11 +4,10 @@
     rerender
     side="bottom"
     panel-color="#ffd670"
-    hide-close-btn
-    height="70%"
+    height="80%"
   >
     <div class="confirmation-popup">
-      <div class="confirmation-text">
+      <div class="confirmation-popup__text">
         Have you taken <b>{{ curr_med.name }}</b
         >?
       </div>
@@ -22,18 +21,26 @@
         no-minutes-overlay
         auto-apply
       />
-      <div class="confirmation-button-container">
+      <div class="confirmation-button__container">
         <div
           class="confirmation-button confirmation-button-yes"
           @click="setYes()"
         >
-          <img src="../assets/thumbs-up.svg" alt="My Happy SVG" />
+          <img
+            class="confirmation-button__svg"
+            src="../assets/thumbs-up.svg"
+            alt="Yes"
+          />
         </div>
         <div
           class="confirmation-button confirmation-button-no"
           @click="setNo()"
         >
-          <img src="../assets/thumbs-down.svg" alt="My Happy SVG" />
+          <img
+            class="confirmation-button__svg"
+            src="../assets/thumbs-down.svg"
+            alt="No"
+          />
         </div>
       </div>
     </div>
@@ -158,7 +165,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="time-slot-gap"></div> -->
   </div>
 </template>
 
@@ -168,6 +174,11 @@ import { ref, onBeforeMount, reactive } from "vue";
 var curr_log_idx = ref();
 var isOpened = ref(false);
 var curr_med = ref("none");
+// var curr_med = ref({
+//   id: 2,
+//   name: "Centrum Ultra Men's Multivitamin",
+//   taken_at: null,
+// });
 
 function getWarfarinDose(date_stamp) {
   const date = new Date();

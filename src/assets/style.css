@@ -2,34 +2,6 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600&family=Barlow:wght@500;600&display=swap");
 
-.shake {
-  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  transform: translate3d(0, 0, 0);
-}
-
-@keyframes shake {
-  10%,
-  90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-
-  20%,
-  80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%,
-  50%,
-  70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%,
-  60% {
-    transform: translate3d(4px, 0, 0);
-  }
-}
-
 h1 {
   font-family: "Barlow", sans-serif;
   font-weight: 700;
@@ -73,44 +45,6 @@ h1 {
   );
   /* background-color: #fefefa; */
   z-index: 1;
-}
-
-.confirmation-popup {
-  padding: 32px;
-  z-index: 2;
-
-  /* background-color: #ffd670; */
-}
-
-.confirmation-text {
-  font-family: "IBM Plex Sans", sans-serif;
-  font-size: x-large;
-  padding-bottom: 16px;
-  color: #2b2d42;
-}
-
-.confirmation-button {
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
-    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.3) 0px -6px 0px inset;
-
-  padding: 32px;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  margin: 16px;
-  font-family: "IBM Plex Sans", sans-serif;
-  font-size: large;
-  text-align: center;
-  border-radius: 32px;
-  background-color: #2b2d42;
-}
-
-
-
-.confirmation-button-container {
-  display: flex;
-  /* border: 1px solid black; */
-  flex-direction: row;
 }
 
 .pill-card {
@@ -161,11 +95,13 @@ h1 {
 }
 
 .pill-icon {
-  width: 40px;
   margin: 16px;
 }
 
-/* flex-grow: 0; */
+.pill-icon > img {
+  width: 40px;
+}
+
 .pill-name {
   font-family: "Barlow Semi Condensed", sans-serif;
   font-size: larger;
@@ -211,7 +147,6 @@ h1 {
       white 75%,
       rgba(0, 0, 0, 0) 100%
     ); */
-
 }
 
 .time-icon {
@@ -220,7 +155,6 @@ h1 {
 }
 
 .time-text {
-
   background-image: url("../assets/marker.svg");
   filter: drop-shadow(4px 4px 10px rgb(0 0 0 / 0.4));
   /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
@@ -313,59 +247,80 @@ a {
 }
 :root {
   --dp-action-button-height: 64px !important;
-  /*General*/
   --dp-font-family: "Barlow Semi Condensed", sans-serif !important;
-
-  --dp-border-radius: 4px; /*Configurable border-radius*/
-  --dp-cell-border-radius: 4px; /*Specific border radius for the calendar cell*/
-  --dp-common-transition: all 0.1s ease-in; /*Generic transition applied on buttons and calendar cells*/
-
-  /*Sizing*/
   --dp-button-height: 64px !important; /*Size for buttons in overlays*/
-  --dp-month-year-row-height: 35px; /*Height of the month-year select row*/
-  --dp-month-year-row-button-size: 35px; /*Specific height for the next/previous buttons*/
   --dp-button-icon-height: 64px !important; /*Icon sizing in buttons*/
-  --dp-cell-size: 35px; /*Width and height of calendar cell*/
-  --dp-cell-padding: 5px; /*Padding in the cell*/
-  --dp-common-padding: 10px; /*Common padding used*/
-  --dp-input-icon-padding: 35px; /*Padding on the left side of the input if icon is present*/
-  --dp-input-padding: 6px 30px 6px 12px; /*Padding in the input*/
-  --dp-menu-min-width: 260px; /*Adjust the min width of the menu*/
-  --dp-action-buttons-padding: 2px 5px; /*Adjust padding for the action buttons in action row*/
-  --dp-row-maring: 5px 0; /*Adjust the spacing between rows in the calendar*/
-  --dp-calendar-header-cell-padding: 0.5rem; /*Adjust padding in calendar header cells*/
-  --dp-two-calendars-spacing: 10px; /*Space between multiple calendars*/
-  --dp-overlay-col-padding: 3px; /*Padding in the overlay column*/
-  --dp-time-inc-dec-button-size: 64px !important; /*Sizing for arrow buttons in the time picker*/
-
-  /*Font sizes*/
-  --dp-font-size: 1rem; /*Default font-size*/
-  --dp-preview-font-size: 3rem !important; /*Font size of the date preview in the action row*/
+  --dp-input-icon-padding: 0px !important; /*Padding on the left side of the input if icon is present*/
+  --dp-input-padding: 0px 0px 0px 0px !important; /*Padding in the input*/
+  --dp-time-inc-dec-button-size: 50px !important; /*Sizing for arrow buttons in the time picker*/
   --dp-time-font-size: xxx-large !important ; /*Font size in the time picker*/
-
-  /*Transitions*/
-  --dp-animation-duration: 0.1s; /*Transition duration*/
-  --dp-menu-appear-transition-timing: cubic-bezier(
-    0.4,
-    0,
-    1,
-    1
-  ); /*Timing on menu appear animation*/
-  --dp-transition-timing: ease-out; /*Timing on slide animations*/
+  --dp-menu-width: 100% !important;
 }
 .dp__pm_am_button {
   font-family: "Barlow Semi Condensed", sans-serif !important;
-  font-size: x-large;
+  font-size: large;
 }
 .dp__action_row {
   display: none !important;
 }
+.dp__main {
+  /* border: 2px solid black; */
+  justify-content: center;
+  padding: 16px;
+}
 
 footer {
-  background-color:#fefefa;
+  background-color: #fefefa;
   font-family: "Barlow", sans-serif !important;
   text-align: center;
   padding: 16px;
   color: #2b2d429a;
-/* opacity: 0.5; */
+  /* opacity: 0.5; */
+}
+
+.dp__overlay {
+  height: 200px !important;
+}
+
+.confirmation-popup {
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 64px;
+  padding: 16px;
+}
+
+.confirmation-popup__text {
+  /* border: 1px solid black; */
+  color: #2b2d42;
+  font-family: "Barlow", sans-serif;
+  font-size: xx-large;
+  padding-bottom: 16px;
+  text-align: center;
+}
+
+.confirmation-button__svg {
+  width: 64px;
+  height: 32px;
+}
+.confirmation-button {
+  align-items: center;
+  background-color: #2b2d42;
+  border-radius: 16px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.3) 0px -6px 0px inset;
+  display: flex;
+  justify-content: center;
+  margin: 16px;
+  padding: 32px;
+}
+
+.confirmation-button__container {
+  align-items: center;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-bottom: 32px;
 }
