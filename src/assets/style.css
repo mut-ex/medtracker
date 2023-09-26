@@ -1,3 +1,367 @@
 /* @import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&display=swap"); */
 
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600&family=Barlow:wght@500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600&family=Barlow:wght@500;600&display=swap");
+
+.shake {
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  transform: translate3d(0, 0, 0);
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+h1 {
+  font-family: "Barlow", sans-serif;
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+
+.day-selector-button {
+  background-color: #42b983;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 64px;
+}
+
+.dimmed {
+  background-color: #a8a8a8;
+}
+
+.day-selector-button-svg {
+  width: 80%;
+  height: 80%;
+}
+
+.day-selector-container {
+  height: 128px;
+  position: sticky;
+  top: 0px;
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
+  background: linear-gradient(
+    180deg,
+    white 0%,
+    white 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  /* background-color: #fefefa; */
+  z-index: 1;
+}
+
+.confirmation-popup {
+  padding: 32px;
+  /* background-color: #ffd670; */
+}
+
+.confirmation-text {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: x-large;
+  padding-bottom: 16px;
+  color: #2b2d42;
+}
+
+.confirmation-button {
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.3) 0px -6px 0px inset;
+
+  padding: 32px;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  margin: 16px;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: large;
+  text-align: center;
+  border-radius: 32px;
+  background-color: #2b2d42;
+}
+
+
+
+.confirmation-button-container {
+  display: flex;
+  /* border: 1px solid black; */
+  flex-direction: row;
+}
+
+.pill-card {
+  /* border: 1px solid #3d348b; */
+  border-radius: 18px;
+  margin: 16px;
+  margin-bottom: 0px;
+  display: flex;
+  /* flex-direction: row; */
+  /* background-color: #d0f4de; */
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 3px 5px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-right: 12px;
+}
+
+.pill-taken-at {
+  align-items: center;
+  background-color: #fefefa;
+  border-radius: 4px;
+  border: 1px solid #3d348b;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  display: flex;
+  width: 256px;
+  flex-basis: 32px;
+  justify-content: center;
+  margin-top: 8px;
+  padding: 8px;
+}
+
+.pill-taken-at--text {
+  /* margin-top: 8px; */
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+  font-size: large;
+}
+
+.small-icon {
+  margin-right: 4px;
+  width: 20px;
+  height: 20px;
+}
+
+.pill-taken {
+  /* opacity: 0.65; */
+  background-color: rgba(219, 224, 230) !important;
+}
+
+.pill-icon {
+  width: 40px;
+  margin: 16px;
+}
+
+/* flex-grow: 0; */
+.pill-name {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-size: larger;
+  font-weight: 600;
+  padding-bottom: 4px;
+}
+
+.pill-dose {
+  font-family: "Barlow", sans-serif;
+  font-weight: 500;
+  font-size: large;
+}
+
+.pill-details {
+  /* margin: 16px; */
+  text-align: left;
+  /* display: flex; */
+  /* flex-direction: column; */
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 28px 20px 28px 0;
+  border-color: transparent #1d2d44 transparent transparent;
+}
+
+.time-container {
+  display: flex;
+  align-items: center;
+  /* margin: 16px; */
+  /* margin-bottom: -16px; */
+  /* padding-top: 16px; */
+  /* padding-left: 16px; */
+  padding-bottom: 16px;
+  /* margin-top: 16px; */
+  position: sticky;
+  top: 128px;
+  /* background: linear-gradient(
+      180deg,
+      white 0%,
+      white 75%,
+      rgba(0, 0, 0, 0) 100%
+    ); */
+}
+
+.time-icon {
+  width: 50px;
+  margin: 8px;
+}
+
+.time-text {
+  background-image: url("../assets/marker.svg");
+  filter: drop-shadow(4px 4px 10px rgb(0 0 0 / 0.4));
+  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+  /* clip-path: path("m20.33,55.25h98.04c5.45,0,9.88-3.77,9.88-8.42V7.03c0-3.75-3.56-6.78-7.95-6.78H20.33c-3.01,0-5.77,1.45-7.11,3.75L1.1,24.68C-.03,26.61-.03,28.89,1.1,30.82l12.12,20.68c1.35,2.3,4.1,3.75,7.11,3.75Z"); */
+  height: 55px;
+  width: 128px;
+  color: #fefefa;
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* display:table-cell; */
+  /* vertical-align:middle; */
+  line-height: 55px;
+  font-size: xx-large;
+  text-align: center;
+  /* background-color: #1d2d44; */
+  /* padding: 0px; */
+  padding-right: 8px;
+  padding-left: 16px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.time-slot-gap {
+  border-left: 6px solid #fdd3e3;
+  margin-left: -6px;
+  height: 64px;
+}
+
+.time-slot {
+  padding-bottom: 32px;
+  margin-left: 32px;
+  /* padding-bottom: 32px; */
+  /* display: flex; */
+  border-left: 2px dotted #fb6f92;
+  /* background-color: #f3722c; */
+  /* background-color: #fefefa; */
+  /* border-radius: 4px; */
+  /* border-bottom-left-radius: 4px; */
+  color: #2b2d42;
+  flex: 1;
+  /* padding: 12px; */
+  text-align: right;
+  font-size: 1.22em;
+  font-weight: 700;
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.pill-yellow {
+  background-color: #fee440;
+  /* border: 1px solid #CBB001; */
+}
+
+.pill-blue {
+  background-color: #9bb1ff;
+  /* border: 1px solid #1F4FFF; */
+}
+
+.pill-orange {
+  background-color: #ff9770;
+  /* border: 1px solid #F54100; */
+}
+
+h3 {
+  margin: 40px 0 0;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+a {
+  color: #42b983;
+}
+
+.dp__theme_light {
+  --dp-background-color: none !important;
+  --dp-menu-border-color: none !important;
+}
+.dp__main {
+  padding: 16px;
+}
+:root {
+  --dp-action-button-height: 64px !important;
+  /*General*/
+  --dp-font-family: "Barlow Semi Condensed", sans-serif !important;
+
+  --dp-border-radius: 4px; /*Configurable border-radius*/
+  --dp-cell-border-radius: 4px; /*Specific border radius for the calendar cell*/
+  --dp-common-transition: all 0.1s ease-in; /*Generic transition applied on buttons and calendar cells*/
+
+  /*Sizing*/
+  --dp-button-height: 64px !important; /*Size for buttons in overlays*/
+  --dp-month-year-row-height: 35px; /*Height of the month-year select row*/
+  --dp-month-year-row-button-size: 35px; /*Specific height for the next/previous buttons*/
+  --dp-button-icon-height: 64px !important; /*Icon sizing in buttons*/
+  --dp-cell-size: 35px; /*Width and height of calendar cell*/
+  --dp-cell-padding: 5px; /*Padding in the cell*/
+  --dp-common-padding: 10px; /*Common padding used*/
+  --dp-input-icon-padding: 35px; /*Padding on the left side of the input if icon is present*/
+  --dp-input-padding: 6px 30px 6px 12px; /*Padding in the input*/
+  --dp-menu-min-width: 260px; /*Adjust the min width of the menu*/
+  --dp-action-buttons-padding: 2px 5px; /*Adjust padding for the action buttons in action row*/
+  --dp-row-maring: 5px 0; /*Adjust the spacing between rows in the calendar*/
+  --dp-calendar-header-cell-padding: 0.5rem; /*Adjust padding in calendar header cells*/
+  --dp-two-calendars-spacing: 10px; /*Space between multiple calendars*/
+  --dp-overlay-col-padding: 3px; /*Padding in the overlay column*/
+  --dp-time-inc-dec-button-size: 64px !important; /*Sizing for arrow buttons in the time picker*/
+
+  /*Font sizes*/
+  --dp-font-size: 1rem; /*Default font-size*/
+  --dp-preview-font-size: 3rem !important; /*Font size of the date preview in the action row*/
+  --dp-time-font-size: xxx-large !important ; /*Font size in the time picker*/
+
+  /*Transitions*/
+  --dp-animation-duration: 0.1s; /*Transition duration*/
+  --dp-menu-appear-transition-timing: cubic-bezier(
+    0.4,
+    0,
+    1,
+    1
+  ); /*Timing on menu appear animation*/
+  --dp-transition-timing: ease-out; /*Timing on slide animations*/
+}
+.dp__pm_am_button {
+  font-family: "Barlow Semi Condensed", sans-serif !important;
+  font-size: x-large;
+}
+.dp__action_row {
+  display: none !important;
+}
+
+footer {
+  background-color:#fefefa;
+  font-family: "Barlow", sans-serif !important;
+  text-align: center;
+  padding: 16px;
+  color: #2b2d429a;
+/* opacity: 0.5; */
+}
