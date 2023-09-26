@@ -72,7 +72,7 @@ h1 {
     rgba(0, 0, 0, 0) 100%
   );
   /* background-color: #fefefa; */
-  z-index: 1;
+  /* z-index: 1; */
 }
 
 .confirmation-popup {
