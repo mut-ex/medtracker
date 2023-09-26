@@ -5,7 +5,7 @@
     side="bottom"
     panel-color="#ffd670"
     hide-close-btn
-    height="100%"
+    height="70%"
   >
     <div class="confirmation-popup">
       <div class="confirmation-text">
