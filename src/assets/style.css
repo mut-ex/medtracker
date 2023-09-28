@@ -1,11 +1,104 @@
 /* @import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&display=swap"); */
 
-@import url("https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600&family=Barlow:wght@500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600&family=Barlow:wght@300;500;600&display=swap");
 
 h1 {
   font-family: "Barlow", sans-serif;
   font-weight: 700;
   margin-bottom: 32px;
+}
+
+.before {
+  width: 100%;
+  background-color: #fefefa;
+  z-index: 1;
+  border-bottom: 1px solid #2b2d42;
+
+  /* margin-right: 0px; */
+  /* border-bottom: 8px solid red; */
+  border-bottom-right-radius: 8px;
+}
+
+.hero {
+  /* border:1px solid #2b2d42; */
+  background-color: #2b2d42;
+  padding-top: 32px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.tab-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.tab__after {
+  border: 1px solid red;
+  display: inline-block;
+}
+.extra-container {
+    background-color: #fefefa;
+}
+
+.extra-container--inactive {
+    background-color: #2b2d42;
+}
+
+.extra {
+    width:16px;
+    height: 16px;
+    background-color: #2b2d42;
+}
+
+.extra--inactive {
+    background-color: #2b2d42;
+}
+
+.extra__before {
+    border-bottom-right-radius:16px;
+}
+
+.extra__after {
+    border-bottom-left-radius:16px;
+}
+
+.tab {
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+  font-size: large;
+  /* height:48px; */
+  padding: 8px 32px;
+  background-color: #2b2d42;
+  color: #fefefa;
+  border-top-left-radius: 32px;
+  border-top-right-radius: 32px;
+}
+
+.tab--active {
+  border: none;
+  /* border-top-left-radius: 12px; */
+  /* border-top-right-radius: 12px; */
+  background-color: #fefefa;
+  color: #2b2d42;
+  font-weight: 600;
+}
+
+/*  */
+
+.as-needed {
+  border: 1px solid #2b2d42;
+  border-radius: 18px;
+  margin: 16px;
+  /* margin-bottom: 0px; */
+  display: flex;
+  /* flex-direction: row; */
+  /* background-color: #d0f4de; */
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 3px 5px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-right: 12px;
 }
 
 .day-selector-button {

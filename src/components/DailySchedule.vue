@@ -45,7 +45,23 @@
       </div>
     </div>
   </VueSidePanel>
+  <div class="hero">
+    <div class="tab-container">
+      <div class="extra-container"><div class="extra extra__before"></div></div>
+      <div class="tab tab--active">Scheduled</div>
+      <div class="extra-container"><div class="extra extra__after"></div></div>
 
+      <div class="extra-container--inactive ">
+        <div class="extra extra--inactive extra__before"></div>
+      </div>
+      <div class="tab">As Needed</div>
+      <div class="extra-container--inactive ">
+        <div class="extra extra--inactive extra__after"></div>
+      </div>
+
+      <!-- <div class="tab__after>">xx</div> -->
+    </div>
+  </div>
   <div class="day-selector-container">
     <div
       class="day-selector-button"
@@ -72,6 +88,7 @@
       />
     </div>
   </div>
+
   <div class="time-slot" v-for="timeslot in curr_log" :key="timeslot.id">
     <div class="time-container">
       <!-- <div class="triangle"></div> -->

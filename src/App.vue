@@ -1,21 +1,20 @@
-
 <template>
-  
   <!-- <UpdateSchedule/> -->
-  <DailySchedule />
+  <!-- <DailySchedule /> -->
+  <h1>Down for maintenance</h1>
 </template>
 
 <script>
-import DailySchedule from './components/DailySchedule.vue'
+// import DailySchedule from "./components/DailySchedule.vue";
 // import UpdateSchedule from './components/UpdateSchedule.vue'
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    DailySchedule,
+    // DailySchedule,
     // UpdateSchedule
-  }
-}
+  },
+};
 </script>
 
 <style>
