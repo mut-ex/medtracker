@@ -14,11 +14,13 @@ A simple, straightforward and useful medication tracking web app. It has the fol
 
 - **User-Friendly Interface**: Clean and easy-to-read layout, which is important for users with visual impairments or cognitive difficulties.
 
-- **Long-term Tracking**: The medication tracking information is stored locally; this allows the user to go back and view their log from past days.
+- **Long-term Tracking**: The medication tracking information is stored locally; this allows the user to go back and view their log from days past.
 
 The following features haven't been implemented (yet):
 - Ability to add and modifiy medications, doses, and schedule from the front-end.
-- Ability to view long-term tracking information in the form of a glance to see trends at a glance.
+- Ability to view long-term tracking information in the form of a chart/graph to see trends at a glance.
+
+[Online Demo](https://medtracker-404i.onrender.com/)
 
 ![meditracker](https://github.com/user-attachments/assets/95f9468b-d42f-463c-b8c7-964fd4e1c281)
 
